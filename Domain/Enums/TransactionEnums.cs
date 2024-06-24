@@ -10,14 +10,14 @@ namespace Domain.Enums
     {
         public enum Categories
         {
-            None = 0,
+          
             Transport = 1,
             Food=2,
             Other=3
         }
         public enum ModeOfPayments
         {
-            None = 0,
+           
             Mpesa = 1,
             Bank=2,
             Cash=3

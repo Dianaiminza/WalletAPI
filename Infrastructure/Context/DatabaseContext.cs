@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,7 @@ namespace Infrastructure.Context
            
             Options = options;
         }
+
+        public DbSet<DailyExpense> DailyExpesnses { get; set; }
     }
 }
