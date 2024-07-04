@@ -1,16 +1,12 @@
-﻿using Domain.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Infrastructure.Shared.Contracts;
+
 using static Domain.Enums.TransactionEnums;
 
 namespace Domain.Entities
 {
     public class DailyExpense : BaseEntity
     {
-
+        public long Id { get; set; }
         public string TransactionName { get; set; } 
 
         public string VendorName { get; set; } 
@@ -20,7 +16,7 @@ namespace Domain.Entities
         public int TransactionCostCharges { get; set; } 
 
         public ModeOfPayments ModeOfPayment { get; set; }
-        public DateTime DateOfTransaction { get; set; } 
+        public DateTimeOffset  DateOfTransaction { get; set; } 
 
         public Categories Category { get; set; } 
 

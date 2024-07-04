@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletAPI", "WalletAPI\WalletAPI.csproj", "{6C3B689C-791E-49E5-A1C9-9FDCE413A1B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WalletAPI", "WalletAPI\WalletAPI.csproj", "{6C3B689C-791E-49E5-A1C9-9FDCE413A1B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{3D7CFCB0-AD63-46D3-B742-12E40CB071EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{3D7CFCB0-AD63-46D3-B742-12E40CB071EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{3F87F7F5-D093-427F-90AC-B67ECB979BA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{3F87F7F5-D093-427F-90AC-B67ECB979BA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{87554667-4342-4CAA-A4EC-056285C27671}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Shared", "Infrastructure.Shared\Infrastructure.Shared.csproj", "{51ACFFE0-9859-46A5-BDE7-DD4FB7AF4C09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{3F87F7F5-D093-427F-90AC-B67ECB979BA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F87F7F5-D093-427F-90AC-B67ECB979BA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F87F7F5-D093-427F-90AC-B67ECB979BA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87554667-4342-4CAA-A4EC-056285C27671}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87554667-4342-4CAA-A4EC-056285C27671}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87554667-4342-4CAA-A4EC-056285C27671}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87554667-4342-4CAA-A4EC-056285C27671}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51ACFFE0-9859-46A5-BDE7-DD4FB7AF4C09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51ACFFE0-9859-46A5-BDE7-DD4FB7AF4C09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51ACFFE0-9859-46A5-BDE7-DD4FB7AF4C09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51ACFFE0-9859-46A5-BDE7-DD4FB7AF4C09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
