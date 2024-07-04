@@ -50,8 +50,8 @@ public class SwaggerConfigurationOptions : IConfigureNamedOptions<SwaggerGenOpti
             : $"{assemblyDescription}",
       Contact = new OpenApiContact
       {
-        Name = "Captain Iminza",
-        Url = new Uri("https://ronforddigital.com")
+        Name = "Captain",
+        Url = new Uri("https://dianaiminza.netlify.app/")
       }
     };
 

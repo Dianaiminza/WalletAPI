@@ -1,7 +1,9 @@
 ﻿using CoreApi.Api.Swagger;
 using Domain.Configuration;
-using Domain.Shared;
 using Infrastructure.Context;
+using Infrastructure.Shared.CustomExceptions;
+using Infrastructure.Shared.Services.Abstractions;
+using Infrastructure.Shared.Services.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +16,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using WalletAPI.Swagger;
 
 namespace WalletAPI.Extensions
 {
@@ -57,6 +60,10 @@ namespace WalletAPI.Extensions
                         builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
         }
+        internal static void AddSharedServices(this IServiceCollection services)
+        {
+            services.AddScoped<IExcelService, ExcelService>();
+        }
         internal static IServiceCollection AddOptionConfigurations(
       this IServiceCollection services,
       IConfiguration configuration)
@@ -64,10 +71,8 @@ namespace WalletAPI.Extensions
             services.Configure<JwtConfiguration>(configuration.GetSection(JwtConfiguration.SectionName));
             return services;
         }
-        public static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services)
+        public static void AddSwaggerConfiguration(this IServiceCollection services)
         {
-            services.AddEndpointsApiExplorer();
-
             services.AddApiVersioning(config =>
             {
                 config.DefaultApiVersion = new ApiVersion(1, 0);
@@ -83,66 +88,52 @@ namespace WalletAPI.Extensions
                 o.DefaultApiVersion = new ApiVersion(1, 0);
             });
 
-            services.AddSwaggerGen(options =>
+            services.AddSwaggerGen(c =>
             {
-                options.AddSecurityDefinition(
-                        "Bearer",
-                        new OpenApiSecurityScheme
-                        {
-                            Name = "Authorization",
-                            Type = SecuritySchemeType.ApiKey,
-                            Scheme = "Bearer",
-                            BearerFormat = "JWT",
-                            In = ParameterLocation.Header,
-                            Description =
-                                "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer token\""
-                        });
-
-                options.AddSecurityRequirement(
-                        new OpenApiSecurityRequirement
-                      {
+                c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Wallet Api Key",
+                    Name = "x-api-key",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+                {
+                    new OpenApiSecurityScheme
                     {
-                        new OpenApiSecurityScheme
+                        Reference = new OpenApiReference
                         {
-                            Name = "Bearer",
-                            In = ParameterLocation.Header,
-                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-                        },
-                        new string[] { }
-                    }
-                      });
+                            Type = ReferenceType.SecurityScheme, Id = "ApiKey"
+                        }
+                    },
+                    new List<string>()
+                }
+        });
 
-                options.MapType<object>(() => new OpenApiSchema { Type = "object", Nullable = true });
+                c.MapType<object>(() => new OpenApiSchema { Type = "object", Nullable = true });
 
-                options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 
                 // Set the comments path for the Swagger JSON and UI.
-                var xmlFile = $"WalletApi.{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                if (File.Exists(xmlPath))
-                {
-                    options.IncludeXmlComments(xmlPath);
-                }
-
                 var currentAssembly = Assembly.GetExecutingAssembly();
-                var xmlDocs = currentAssembly
-                        .GetReferencedAssemblies()
-                        .Union(new[] { currentAssembly.GetName() })
-                        .Select(a => Path.Combine(AppContext.BaseDirectory, $"{a.Name}.xml"))
-                        .Where(File.Exists)
-                        .ToArray();
+                var xmlDocs = currentAssembly.GetReferencedAssemblies()
+                  .Union(new[] { currentAssembly.GetName() })
+                  .Select(a => Path.Combine(AppContext.BaseDirectory, $"{a.Name}.xml"))
+                  .Where(File.Exists).ToArray();
 
                 Array.ForEach(xmlDocs, d =>
                 {
                     var doc = XDocument.Load(d);
-                    options.IncludeXmlComments(() => new XPathDocument(doc.CreateReader()), true);
+                    c.IncludeXmlComments(() => new XPathDocument(doc.CreateReader()), true);
+                    c.SchemaFilter<SwaggerDescribeEnumMembers>(doc);
                 });
             });
 
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfigurationOptions>();
-
-            return services;
         }
+
+        
         internal static IServiceCollection ConfigureJwtAuthentication(
       this IServiceCollection services,
       IConfiguration configuration)
